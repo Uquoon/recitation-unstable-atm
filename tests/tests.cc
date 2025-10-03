@@ -75,6 +75,30 @@ TEST_CASE("Example: Print Prompt Ledger", "[ex-3]") {
   REQUIRE(CompareFiles("./ex-1.txt", "./prompt.txt"));
 }
 
-TEST_CASE("", ""){
-  
+TEST_CASE("Example: Register Existed Account", "[ex-4]") {
+  Atm atm;
+  atm.RegisterAccount(12345678, 1234, "Tony Qi", 300.30);
+  REQUIRE_THROWS(atm.RegisterAccount(12345678, 1234, "Kar Tar", 300.30));
+}
+
+TEST_CASE("Example: Withdraw Negative Cash", "[ex-5]") {
+  Atm atm;
+  atm.RegisterAccount(99898989, 1234, "Tony Tong", 300.20);
+  REQUIRE_THROWS(atm.WithdrawCash(99898989, 1234, -10));
+}
+
+TEST_CASE("Example: Simple deposit", "[ex-6]") {
+  Atm atm;
+  atm.RegisterAccount(99293838, 1234, "Sam Sepiol", 300.30);
+  atm.DepositCash(99293838, 1234, 30);
+  auto accounts = atm.GetAccounts();
+  Account sam_account = accounts[{99293838, 1234}];
+
+  REQUIRE(sam_account.balance == 330.30);
+}
+
+TEST_CASE("Example: Printing inexisting ledger", "[ex-7]") {
+  Atm atm;
+  atm.RegisterAccount(12657483, 1234, "William Qu", 300.30);
+  REQUIRE_THROWS(atm.PrintLedger("./new.txt", 11451419, 1980));
 }
